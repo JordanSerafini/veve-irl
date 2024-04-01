@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap');
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.regular {
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+}
+
+.medium {
+    font-family: 'Playfair Display', serif;
+    font-weight: 500;
+}
+
+.semibold {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+}
+ 
+ .bold {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+}
+ 
+.extrabold {
+    font-family: 'Playfair Display', serif;
+    font-weight: 800;
+}
+  
+.shadow-effect-2 {
+  /* Décalage horizontal, décalage vertical, flou, étalement, couleur */
+  box-shadow: 6px 4px 15px rgba(47, 39, 206, 0.2);
+}
+
+.shadow-effect-primaryNew {
+  /* Décalage horizontal, décalage vertical, flou, étalement, couleur */
+  box-shadow: -16px 24px 5px rgba(169, 168, 193, 0.2);
+}
+
+
+.shadow-effect-blue {
+  /* Décalage horizontal, décalage vertical, flou, étalement, couleur */
+  box-shadow: 3px 0px 15px rgba(83, 109, 254, 0.5);
+}
+
+
+
+
+.shadow-effect {
+  /* Décalage horizontal, décalage vertical, flou, étalement, couleur */
+  box-shadow: 8px 8px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+.libre-baskerville-regular {
+    font-family: "Libre Baskerville", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .libre-baskerville-regular-italic {
+    font-family: "Libre Baskerville", serif;
+    font-weight: 400;
+    font-style: italic;
+  }
+  
+  .libre-baskerville-bold {
+    font-family: "Libre Baskerville", serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+
+.custom-input:focus {
+  border-color: blue;
+}
