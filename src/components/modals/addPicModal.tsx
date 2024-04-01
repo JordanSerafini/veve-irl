@@ -5,10 +5,10 @@ import { url } from "../../utils/url";
 function AddPicModal() {
   const [userLocation, setUserLocation] = useState<veveEvent | null>(null);
   const [formData, setFormData] = useState({
-    nom: "",
+    name: "",
     description: "",
-    latitude: 0,
-    longitude: 0,
+    lat: userLocation?.lat,
+    lng: userLocation?.lng,
     image: "",
   });
 
@@ -77,6 +77,18 @@ function AddPicModal() {
     }
   }, []);
 
+  useEffect(() => {
+    if (userLocation) {
+      setFormData((prevState) => ({
+        ...prevState,
+        lat: userLocation.lat,
+        lng: userLocation.lng,
+      }));
+    }
+  }, [userLocation]);
+  
+
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -88,16 +100,12 @@ function AddPicModal() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append("nom", formData.nom);
-      formDataToSend.append("description", formData.description);
-      formDataToSend.append("latitude", formData.latitude.toString());
-      formDataToSend.append("longitude", formData.longitude.toString());
-      formDataToSend.append("image", selectedFile as Blob);
-
-      const response = await fetch(`${url.local}/poi`, {
+      const response = await fetch(`${url.local}/veve`, {
         method: "POST",
-        body: formDataToSend,
+        headers: {
+          "Content-Type": "application/json", 
+        },
+        body: JSON.stringify(formData), 
       });
       if (response.ok) {
         console.log("Créé avec succès");
@@ -108,6 +116,7 @@ function AddPicModal() {
       console.error("Erreur lors de la création:", error);
     }
   };
+  
 
   return (
     <div className="modal">
@@ -115,12 +124,12 @@ function AddPicModal() {
         <h2>Ajouter une photo</h2>
         <form onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="nom">Nom:</label>
+            <label htmlFor="name">Nom:</label>
             <input
               type="text"
-              id="nom"
-              name="nom"
-              value={formData.nom}
+              id="name"
+              name="name"
+              value={formData.name}
               onChange={handleChange}
             />
           </div>
@@ -140,17 +149,7 @@ function AddPicModal() {
               <input type="hidden" name="longitude" value={userLocation.lng} />
             </>
           )}
-          <div>
-            <label htmlFor="image">Image:</label>
-            <input
-              type="text"
-              id="image"
-              name="image"
-              value={formData.image}
-              onChange={handleChange}
-            />
-          </div>
-          <button type="submit">Ajouter</button>
+
           <div>
             <input
               type="file"
@@ -162,6 +161,7 @@ function AddPicModal() {
               Upload
             </button>
           </div>
+          <button type="submit">Ajouter</button>
         </form>
       </div>
     </div>
