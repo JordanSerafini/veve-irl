@@ -1,6 +1,7 @@
 // App component
 import MapContainer from "./components/map/MapContainer";
-import UploadForm from "./components/map/page";
+import UploadForm from "./components/map/UploadImg";
+import AddPicModal from "./components/modals/addPicModal";
 
 function App() {
   
@@ -8,6 +9,7 @@ function App() {
 
   return (
     <div className="App">
+      <AddPicModal />
       <UploadForm />
       <MapContainer />
     </div>

@@ -3,7 +3,7 @@ export default interface veveEvent {
     name: string;
     description: string;
     url: string;
-    lon: number;
+    lat: number;
     lng: number;
     owner: number;
     comment: string;
