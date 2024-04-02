@@ -1,34 +1,30 @@
-import { useState } from "react";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import  VeveEvent  from "../../types/veve.type";
-//import { usePoiStoreActions } from '../../store/veveevent.store';
+import { usePoiStoreSelectors, usePoiStoreActions } from "../../store/veveevent.store";
 
 
 interface MapContainerProps {
   pois: VeveEvent[];
   isShowPics: boolean;
-  onShowPicsChange: (newValue: boolean) => void;
+  setShowPics: (newValue: boolean) => void;
 }
 
 
-const MapContainer = ({ pois, isShowPics, onShowPicsChange }: MapContainerProps) => {
-
- // const poiStoreActions = usePoiStoreActions();
-
+const MapContainer = ({ pois, isShowPics, setShowPics }: MapContainerProps) => {
+  const { selectedPoi } = usePoiStoreSelectors(); 
+  const { setSelectedPoi } = usePoiStoreActions(); 
 
   const defaultCenter = {
     lat: 45.900002,
     lng: 6.11667,
   };
 
-  const [selectedPoi, setSelectedPoi] = useState<VeveEvent | null>(null);
 
   const handleMarkerClick = (poi: VeveEvent) => {
     if (selectedPoi && selectedPoi.id === poi.id) {
       setSelectedPoi(null);
     } else {
       setSelectedPoi(poi);
-      //poiStoreActions.addPoi(poi);
     }
   };
   
@@ -38,7 +34,7 @@ const MapContainer = ({ pois, isShowPics, onShowPicsChange }: MapContainerProps)
   };
 
   const showPics = () => {
-    onShowPicsChange(!isShowPics);
+    setShowPics(!isShowPics);
   };
 
   return (

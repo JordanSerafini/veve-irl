@@ -130,6 +130,8 @@ export default {
         "greenPerso": "#43A047",
         "bluePerso": "#42A5F5",
         "orangePerso": "#FFA500",
+        "veveBlue1":"#0285FF",
+        "veveBlue2":"#004EBB",
 
        
       },

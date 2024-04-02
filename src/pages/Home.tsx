@@ -5,13 +5,14 @@ import {
   usePoiStoreSelectors,
   usePoiStoreActions,
 } from "../store/veveevent.store";
-import VeveEvent from "../types/veve.type";
 import Pics from "../components/pics/pics";
+import BottomNavBar from "../components/nav/bottomNavBar";
 
 function Home() {
   const { selectPois } = usePoiStoreSelectors();
   const { fetchPois } = usePoiStoreActions();
   const [isShowPics, setIsShowPics] = useState<boolean>(false);
+  const {selectedPoi} = usePoiStoreSelectors();
   
 
   useEffect(() => {
@@ -19,7 +20,7 @@ function Home() {
   }, [fetchPois]);
 
   const pois = selectPois();
-  const handleShowPicsChange = (
+  const setShowPics = (
     newValue: boolean | ((prevState: boolean) => boolean)
   ) => {
     setIsShowPics(newValue);
@@ -27,31 +28,20 @@ function Home() {
 
   return (
     <div className="w-10/10 h-10/10 gap-8 flex flex-col items-center justify-center bg-mainBG2">
-      <div className="h-3/10 w-8/10 border-2 border-secondary bg-white">
-        <AddPicModal />
-      </div>
+      
       {isShowPics ? (
-        <Pics url=""/>
+        <Pics url={selectedPoi?.url || ""}/>
       ) : (
-        <div className="w-9.5/10 h-5/10 border-2 border-secondary rounded">
+        <div className="w-10/10 h-6/10">
           <MapContainer
             pois={pois}
             isShowPics={isShowPics}
-            onShowPicsChange={handleShowPicsChange}
+            setShowPics={setShowPics}
           />
         </div>
       )}
+      < BottomNavBar />
 
-      <div className="">
-        <h2>Points d'intérêt</h2>
-        <ul>
-          {pois.map((poi: VeveEvent) => (
-            <li key={poi.id}>
-              <strong>{poi.name}</strong>: {poi.description}
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 }

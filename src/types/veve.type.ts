@@ -20,6 +20,8 @@ export interface PoiStore {
   clearPois: () => void;
   fetchPois: () => Promise<void>;
   error: string | null;
+  selectedPoi: VeveEvent | null;
+  setSelectedPoi: (poi: VeveEvent | null) => void;
 }
 
 export type AddPoi = (poi: VeveEvent) => void;
