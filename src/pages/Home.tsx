@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import MapContainer from "../components/map/MapContainer";
 import AddPicModal from "../components/modals/addPicModal";
 import { usePoiStoreSelectors, usePoiStoreActions } from "../store/veveevent.store";
+import VeveEvent from "../types/veve.type";
 
 function Home() {
   const { selectPois } = usePoiStoreSelectors();
@@ -24,7 +25,7 @@ function Home() {
       <div className="poi-list">
         <h2>Points d'intérêt</h2>
         <ul>
-          {pois.map((poi) => (
+          {pois.map((poi: VeveEvent) => (
             <li key={poi.id}>
               <strong>{poi.name}</strong>: {poi.description}
             </li>

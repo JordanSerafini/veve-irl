@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
-import { VeveEvent } from "../../types/veve.type";
+import  VeveEvent  from "../../types/veve.type";
 
 interface MapContainerProps {
   pois: VeveEvent[];

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import veveEvent from "../../types/veve.type";
+import veveEvent from "../../types/veve.type"; // Ensure this type matches expected structure
 import { url } from "../../utils/url";
 
 function AddPicModal() {
@@ -7,8 +7,8 @@ function AddPicModal() {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    lat: userLocation?.lat,
-    lng: userLocation?.lng,
+    lat: userLocation?.lat || "",
+    lng: userLocation?.lng || "",
     image: "",
   });
 
@@ -26,7 +26,6 @@ function AddPicModal() {
       formData.append("image", selectedFile);
 
       try {
-        console.log(formData.get("image")); // Vérifiez les données du fichier avant l'envoi
         const response = await fetch("http://localhost:5000/upload", {
           method: "POST",
           body: formData,
@@ -42,40 +41,38 @@ function AddPicModal() {
     }
   };
 
-  useEffect(() => {
-    // Vérifie si le navigateur prend en charge la géolocalisation
+  const handlePosition = () => {
     if ("geolocation" in navigator) {
-      // Demande la position de l'utilisateur
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setUserLocation({
-            id: 0,
-            name: "",
-            description: "",
-            url: "",
-            lat: latitude,
-            lng: longitude,
-            owner: 0,
-            comment: "",
-            rate: 0,
-          });
-          setFormData((prevState) => ({
-            ...prevState,
-            latitude,
-            longitude,
-          }));
-        },
-        (error) => {
-          console.error("Erreur de géolocalisation:", error);
-        }
-      );
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                setUserLocation({
+                    // Ensure the structure matches veveEvent
+                    id: 0,
+                    name: "",
+                    description: "",
+                    url: "",
+                    lat: latitude,
+                    lng: longitude,
+                    owner: 0,
+                    comment: "",
+                    rate: 0,
+                });
+                setFormData((prevState) => ({
+                    ...prevState,
+                    lat: latitude,
+                    lng: longitude,
+                }));
+            },
+            (error) => {
+                console.error("Erreur de géolocalisation:", error);
+            }
+        );
     } else {
-      console.error(
-        "La géolocalisation n'est pas prise en charge par ce navigateur."
-      );
+        console.error("La géolocalisation n'est pas prise en charge par ce navigateur.");
     }
-  }, []);
+};
+
 
   useEffect(() => {
     if (userLocation) {
@@ -86,8 +83,6 @@ function AddPicModal() {
       }));
     }
   }, [userLocation]);
-  
-
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -116,7 +111,6 @@ function AddPicModal() {
       console.error("Erreur lors de la création:", error);
     }
   };
-  
 
   return (
     <div className="modal">
@@ -134,6 +128,14 @@ function AddPicModal() {
             />
           </div>
           <div>
+            <button onClick={handlePosition}>Obtenir la position</button>
+            {userLocation && (
+              <p>
+                Position: {userLocation.lat}, {userLocation.lng}
+              </p>
+            )}
+          </div>
+          <div>
             <label htmlFor="description">Description:</label>
             <input
               type="text"
@@ -143,12 +145,6 @@ function AddPicModal() {
               onChange={handleChange}
             />
           </div>
-          {userLocation && (
-            <>
-              <input type="hidden" name="latitude" value={userLocation.lat} />
-              <input type="hidden" name="longitude" value={userLocation.lng} />
-            </>
-          )}
 
           <div>
             <input

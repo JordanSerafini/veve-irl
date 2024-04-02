@@ -1,4 +1,4 @@
-export interface VeveEvent {
+export default interface VeveEvent {
   id: number;
   name: string;
   description?: string;
@@ -17,6 +17,7 @@ export interface PoiStore {
   updatePoi: (id: number, updatedPoi: VeveEvent) => void;
   clearPois: () => void;
   fetchPois: () => Promise<void>;
+  error: string | null;
 }
 
 export type AddPoi = (poi: VeveEvent) => void;

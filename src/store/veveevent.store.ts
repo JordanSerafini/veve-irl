@@ -1,44 +1,51 @@
 // poiStore.ts
-import { create, useStore } from 'zustand';
-import { PoiStore, VeveEvent } from '../types/veve.type'; // Importez le type VeveEvent
+import { create } from 'zustand';
 import { url } from '../utils/url';
+import VeveEvent, { PoiStore } from '../types/veve.type';
 
 export const usePoiStore = create<PoiStore>((set) => ({
-  pois: [] as VeveEvent[], // Utilisez le type VeveEvent ici
-  addPoi: (poi) => set((state) => ({ pois: [...state.pois, poi] })),
-  removePoi: (id) => set((state) => ({ pois: state.pois.filter((poi) => poi.id !== id) })),
-  updatePoi: (id, updatedPoi) =>
+  pois: [] as VeveEvent[],
+  error: null, // Ajout d'un état d'erreur initial
+  addPoi: (poi: VeveEvent) => set((state) => ({ pois: [...state.pois, poi], error: null })),
+  removePoi: (id: number) => set((state) => ({ pois: state.pois.filter((poi) => poi.id !== id), error: null })),
+  updatePoi: (id: number, updatedPoi: VeveEvent) =>
     set((state) => ({
       pois: state.pois.map((poi) => (poi.id === id ? updatedPoi : poi)),
+      error: null
     })),
-  clearPois: () => set({ pois: [] }),
+  clearPois: () => set({ pois: [], error: null }),
   fetchPois: async () => {
     try {
       const response = await fetch(`${url.local}/veve`);
-      const pois: VeveEvent[] = await response.json(); // Utilisez le type VeveEvent ici
-      set({ pois });
+      if (!response.ok) {
+        throw new Error("Failed to fetch pois");
+      }
+      const pois: VeveEvent[] = await response.json();
+      set({ pois, error: null }); 
     } catch (error) {
-      console.error("Failed to fetch pois:", error);
+      console.error(error);
+      set({ error: "Failed to fetch POIs" }); 
     }
   },
 }));
 
-// Custom hook for accessing the store
+
+// Hooks personnalisés ajustés
 export const usePoiStoreSelectors = () => {
-  const pois = useStore(usePoiStore); // Utilisez useStore ici
+  const { pois, error } = usePoiStore((state) => ({pois: state.pois, error: state.error}));
 
-  // Selectors
-  const selectPois = () => pois.pois;
-  const selectPoiById = (id: number) => pois.pois.find((poi) => poi.id === id);
-  const selectPoiByLocation = (lat: number, lng: number) => pois.pois.find((poi) => poi.lat === lat && poi.lng === lng);
-  const selectPoiByName = (name: string) => pois.pois.find((poi) => poi.name === name);
+  const selectPois = () => pois;
+  const selectPoiById = (id: number) => pois.find((poi) => poi.id === id);
+  const selectPoiByLocation = (lat: number, lng: number) => pois.find((poi) => poi.lat === lat && poi.lng === lng);
+  const selectPoiByName = (name: string) => pois.find((poi) => poi.name === name);
 
-  return { selectPois, selectPoiById, selectPoiByLocation, selectPoiByName };
+  return { selectPois, selectPoiById, selectPoiByLocation, selectPoiByName, error };
 };
 
-// Custom hook for accessing the store actions
-export const usePoiStoreActions = () => {
-  const { addPoi, removePoi, updatePoi, clearPois, fetchPois } = usePoiStore();
-
-  return { addPoi, removePoi, updatePoi, clearPois, fetchPois };
-};
+export const usePoiStoreActions = () => usePoiStore((state) => ({
+  addPoi: state.addPoi,
+  removePoi: state.removePoi,
+  updatePoi: state.updatePoi,
+  clearPois: state.clearPois,
+  fetchPois: state.fetchPois,
+}));
