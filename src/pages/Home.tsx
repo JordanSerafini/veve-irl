@@ -15,11 +15,11 @@ function Home() {
   const pois = selectPois();
 
   return (
-    <div className="bg-red-500 w-10/10 h-10/10">
-      <div className="h-3/10">
+    <div className="w-10/10 h-10/10 gap-8 flex flex-col items-center justify-center bg-mainBG2">
+      <div className="h-3/10 w-8/10 border-2 border-secondary bg-white">
         <AddPicModal />
       </div>
-      <div className="w-full h-5/10">
+      <div className="w-9.5/10 h-5/10 border-2 border-secondary rounded">
         <MapContainer pois={pois} />
       </div>
       <div className="">

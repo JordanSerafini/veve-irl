@@ -10,6 +10,7 @@ export default interface VeveEvent {
   rate?: number;
 }
 
+
 export interface PoiStore {
   pois: VeveEvent[];
   addPoi: (poi: VeveEvent) => void;

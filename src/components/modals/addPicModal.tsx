@@ -43,43 +43,43 @@ function AddPicModal() {
 
   const handlePosition = () => {
     if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const { latitude, longitude } = position.coords;
-                setUserLocation({
-                    // Ensure the structure matches veveEvent
-                    id: 0,
-                    name: "",
-                    description: "",
-                    url: "",
-                    lat: latitude,
-                    lng: longitude,
-                    owner: 0,
-                    comment: "",
-                    rate: 0,
-                });
-                setFormData((prevState) => ({
-                    ...prevState,
-                    lat: latitude,
-                    lng: longitude,
-                }));
-            },
-            (error) => {
-                console.error("Erreur de géolocalisation:", error);
-            }
-        );
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setUserLocation({
+            id: 0, 
+            name: "",
+            description: "", 
+            url: "", 
+            lat: latitude,
+            lng: longitude,
+            owner: 0, 
+            comment: "", 
+            rate: 0, 
+          });
+          // Mettre à jour formData avec les nouvelles valeurs de latitude et longitude
+          setFormData((prevState) => ({
+            ...prevState,
+            lat: latitude.toString(),
+            lng: longitude.toString(),
+          }));
+        },
+        (error) => {
+          console.error("Erreur de géolocalisation:", error);
+        }
+      );
     } else {
-        console.error("La géolocalisation n'est pas prise en charge par ce navigateur.");
+      console.error("La géolocalisation n'est pas prise en charge par ce navigateur.");
     }
-};
-
+  };
+  
 
   useEffect(() => {
     if (userLocation) {
       setFormData((prevState) => ({
         ...prevState,
-        lat: userLocation.lat,
-        lng: userLocation.lng,
+        lat: userLocation.lat.toString(),
+        lng: userLocation.lng.toString(),
       }));
     }
   }, [userLocation]);
@@ -113,11 +113,9 @@ function AddPicModal() {
   };
 
   return (
-    <div className=" ">
-      <div className="">
-        <h2>Ajouter une photo</h2>
+      <div className="flex flex-col h-full w-full items-center justify-center">
         <form onSubmit={handleSubmit}>
-          <div>
+          <div className="flex gap-2 items-center">
             <label htmlFor="name">Nom:</label>
             <input
               type="text"
@@ -125,6 +123,7 @@ function AddPicModal() {
               name="name"
               value={formData.name}
               onChange={handleChange}
+              className="border-2 border-gray-300 p-2 w-full rounded-md"
             />
           </div>
           <div>
@@ -135,7 +134,7 @@ function AddPicModal() {
               </p>
             )}
           </div>
-          <div>
+          <div className="flex gap-2 items-center">
             <label htmlFor="description">Description:</label>
             <input
               type="text"
@@ -143,6 +142,7 @@ function AddPicModal() {
               name="description"
               value={formData.description}
               onChange={handleChange}
+              className="border-2 border-gray-300 p-2 w-full rounded-md"
             />
           </div>
 
@@ -160,7 +160,6 @@ function AddPicModal() {
           <button type="submit">Ajouter</button>
         </form>
       </div>
-    </div>
   );
 }
 
