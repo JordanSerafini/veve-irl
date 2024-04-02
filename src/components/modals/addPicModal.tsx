@@ -31,7 +31,13 @@ function AddPicModal() {
           body: formData,
         });
         if (response.ok) {
+          const data = await response.json();
+          setFormData((prevState) => ({
+            ...prevState,
+            image: data.imageUrl,
+          }));
           console.log("Image uploaded successfully!");
+
         } else {
           console.error("Failed to upload image");
         }

@@ -1,27 +1,46 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import MapContainer from "../components/map/MapContainer";
 import AddPicModal from "../components/modals/addPicModal";
-import { usePoiStoreSelectors, usePoiStoreActions } from "../store/veveevent.store";
+import {
+  usePoiStoreSelectors,
+  usePoiStoreActions,
+} from "../store/veveevent.store";
 import VeveEvent from "../types/veve.type";
+import Pics from "../components/pics/pics";
 
 function Home() {
   const { selectPois } = usePoiStoreSelectors();
-  const { fetchPois } = usePoiStoreActions(); 
-  
+  const { fetchPois } = usePoiStoreActions();
+  const [isShowPics, setIsShowPics] = useState<boolean>(false);
+
   useEffect(() => {
     fetchPois();
-  }, [fetchPois]); 
+  }, [fetchPois]);
 
   const pois = selectPois();
+  const handleShowPicsChange = (
+    newValue: boolean | ((prevState: boolean) => boolean)
+  ) => {
+    setIsShowPics(newValue);
+  };
 
   return (
     <div className="w-10/10 h-10/10 gap-8 flex flex-col items-center justify-center bg-mainBG2">
       <div className="h-3/10 w-8/10 border-2 border-secondary bg-white">
         <AddPicModal />
       </div>
-      <div className="w-9.5/10 h-5/10 border-2 border-secondary rounded">
-        <MapContainer pois={pois} />
-      </div>
+      {isShowPics ? (
+        <Pics url=""/>
+      ) : (
+        <div className="w-9.5/10 h-5/10 border-2 border-secondary rounded">
+          <MapContainer
+            pois={pois}
+            isShowPics={isShowPics}
+            onShowPicsChange={handleShowPicsChange}
+          />
+        </div>
+      )}
+
       <div className="">
         <h2>Points d'intérêt</h2>
         <ul>

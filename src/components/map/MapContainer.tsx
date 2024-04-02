@@ -4,9 +4,12 @@ import  VeveEvent  from "../../types/veve.type";
 
 interface MapContainerProps {
   pois: VeveEvent[];
+  isShowPics: boolean;
+  onShowPicsChange: (newValue: boolean) => void;
 }
 
-const MapContainer = ({ pois }: MapContainerProps) => {
+
+const MapContainer = ({ pois, isShowPics, onShowPicsChange }: MapContainerProps) => {
   const defaultCenter = {
     lat: 45.900002,
     lng: 6.11667,
@@ -21,6 +24,12 @@ const MapContainer = ({ pois }: MapContainerProps) => {
   const handleCloseInfoWindow = () => {
     setSelectedPoi(null);
   };
+
+  const showPics = () => {
+    onShowPicsChange(!isShowPics);
+  };
+
+  console.log(isShowPics);
 
 
   return (
@@ -44,7 +53,7 @@ const MapContainer = ({ pois }: MapContainerProps) => {
             onCloseClick={handleCloseInfoWindow}
           >
             <div>
-              <p>{selectedPoi.url}</p>
+              <button onClick={showPics}>Voir photo</button>
             </div>
           </InfoWindow>
         )}
