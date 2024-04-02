@@ -12,6 +12,7 @@ function Home() {
   const { selectPois } = usePoiStoreSelectors();
   const { fetchPois } = usePoiStoreActions();
   const [isShowPics, setIsShowPics] = useState<boolean>(false);
+  
 
   useEffect(() => {
     fetchPois();

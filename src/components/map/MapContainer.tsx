@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { GoogleMap, Marker, InfoWindow } from "@react-google-maps/api";
 import  VeveEvent  from "../../types/veve.type";
+//import { usePoiStoreActions } from '../../store/veveevent.store';
+
 
 interface MapContainerProps {
   pois: VeveEvent[];
@@ -10,6 +12,10 @@ interface MapContainerProps {
 
 
 const MapContainer = ({ pois, isShowPics, onShowPicsChange }: MapContainerProps) => {
+
+ // const poiStoreActions = usePoiStoreActions();
+
+
   const defaultCenter = {
     lat: 45.900002,
     lng: 6.11667,
@@ -18,8 +24,14 @@ const MapContainer = ({ pois, isShowPics, onShowPicsChange }: MapContainerProps)
   const [selectedPoi, setSelectedPoi] = useState<VeveEvent | null>(null);
 
   const handleMarkerClick = (poi: VeveEvent) => {
-    setSelectedPoi(poi);
+    if (selectedPoi && selectedPoi.id === poi.id) {
+      setSelectedPoi(null);
+    } else {
+      setSelectedPoi(poi);
+      //poiStoreActions.addPoi(poi);
+    }
   };
+  
 
   const handleCloseInfoWindow = () => {
     setSelectedPoi(null);
@@ -28,9 +40,6 @@ const MapContainer = ({ pois, isShowPics, onShowPicsChange }: MapContainerProps)
   const showPics = () => {
     onShowPicsChange(!isShowPics);
   };
-
-  console.log(isShowPics);
-
 
   return (
     <div className="w-full h-full">
@@ -52,9 +61,7 @@ const MapContainer = ({ pois, isShowPics, onShowPicsChange }: MapContainerProps)
             position={{ lat: selectedPoi.lat, lng: selectedPoi.lng }}
             onCloseClick={handleCloseInfoWindow}
           >
-            <div>
               <button onClick={showPics}>Voir photo</button>
-            </div>
           </InfoWindow>
         )}
       </GoogleMap>

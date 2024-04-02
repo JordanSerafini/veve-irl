@@ -1,4 +1,3 @@
-// poiStore.ts
 import { create } from 'zustand';
 import { url } from '../utils/url';
 import VeveEvent, { PoiStore } from '../types/veve.type';
@@ -27,6 +26,19 @@ export const usePoiStore = create<PoiStore>((set) => ({
       set({ error: "Failed to fetch POIs" }); 
     }
   },
+  getPois: async () => {
+    try {
+      const response = await fetch(`${url.local}/veve`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch pois");
+      }
+      const pois: VeveEvent[] = await response.json();
+      return pois;
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  },
 }));
 
 
@@ -48,4 +60,5 @@ export const usePoiStoreActions = () => usePoiStore((state) => ({
   updatePoi: state.updatePoi,
   clearPois: state.clearPois,
   fetchPois: state.fetchPois,
+  getPois: state.getPois,
 }));

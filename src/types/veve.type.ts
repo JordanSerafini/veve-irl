@@ -12,6 +12,7 @@ export default interface VeveEvent {
 
 
 export interface PoiStore {
+  getPois: () => Promise<VeveEvent[]>;
   pois: VeveEvent[];
   addPoi: (poi: VeveEvent) => void;
   removePoi: (id: number) => void;

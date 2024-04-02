@@ -159,12 +159,13 @@ function AddPicModal() {
               onChange={handleFileChange}
               name="image"
             />
-            <button onClick={handleUpload} disabled={!selectedFile}>
-              Upload
-            </button>
+           
           </div>
           <button type="submit">Ajouter</button>
         </form>
+        <button onClick={handleUpload} disabled={!selectedFile}>
+              Upload
+            </button>
       </div>
   );
 }
