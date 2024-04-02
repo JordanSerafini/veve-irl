@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import MapContainer from "../components/map/MapContainer";
-import AddPicModal from "../components/modals/addPicModal";
 import {
   usePoiStoreSelectors,
   usePoiStoreActions,
