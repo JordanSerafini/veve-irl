@@ -113,8 +113,8 @@ function AddPicModal() {
   };
 
   return (
-    <div className="modal">
-      <div className="modal-content">
+    <div className=" ">
+      <div className="">
         <h2>Ajouter une photo</h2>
         <form onSubmit={handleSubmit}>
           <div>

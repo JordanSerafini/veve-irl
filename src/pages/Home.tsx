@@ -15,14 +15,14 @@ function Home() {
   const pois = selectPois();
 
   return (
-    <div className="container">
-      <div className="form">
+    <div className="bg-red-500 w-10/10 h-10/10">
+      <div className="h-3/10">
         <AddPicModal />
       </div>
-      <div className="map">
+      <div className="w-full h-5/10">
         <MapContainer pois={pois} />
       </div>
-      <div className="poi-list">
+      <div className="">
         <h2>Points d'intérêt</h2>
         <ul>
           {pois.map((poi: VeveEvent) => (

@@ -24,7 +24,7 @@ const MapContainer = ({ pois }: MapContainerProps) => {
 
 
   return (
-    <div className="container">
+    <div className="w-full h-full">
       <GoogleMap
         mapContainerStyle={{ height: "100%", width: "100%" }}
         zoom={10}
